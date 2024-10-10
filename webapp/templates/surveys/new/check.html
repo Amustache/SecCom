@@ -1,0 +1,103 @@
+{% extends "includes/base.html" %}
+{% block title %}Nouvelle enquête{% endblock %}
+
+{% block css %}
+<link href="{{url_for('static', filename='css/datatables.min.css')}}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Nouvelle enquête</h1>
+<ol class="breadcrumb mb-4">
+  <li class="breadcrumb-item"><a href="{{url_for('home')}}">Accueil</a></li>
+  <li class="breadcrumb-item active">Enquête</li>
+  <li class="breadcrumb-item active">Nouvelle</li>
+</ol>
+
+<div class="text-center mb-4">
+  <span class="badge rounded-pill text-bg-dark">&nbsp;</span>
+  <span class="badge rounded-pill text-bg-primary">Vérification</span>
+  <span class="badge rounded-pill text-bg-light">&nbsp;</span>
+  <span class="badge rounded-pill text-bg-light">&nbsp;</span>
+  <span class="badge rounded-pill text-bg-light">&nbsp;</span>
+</div>
+
+<div class="card mb-4 col-6">
+  <div class="card-header">
+    <i class="fas fa-circle-info me-1"></i>
+  </div>
+  <div class="card-body">
+    <dl class="row">
+      <dt class="col-sm-3">Nom de l'enquête</dt>
+      <dd class="col-sm-9">{{name}}</dd>
+
+      <dt class="col-sm-3">Année de l'enquête</dt>
+      <dd class="col-sm-9">{{year}}</dd>
+
+      <dt class="col-sm-3">#&nbsp;Questions trouvées</dt>
+      <dd class="col-sm-9">{{results|length}}</dd>
+
+      <dt class="col-sm-3">#&nbsp;Répondants trouvés</dt>
+      <dd class="col-sm-9">{{results[0].num_rows}}</dd>
+
+      <dt class="col-sm-3">#&nbsp;Questions trouvées correspondantes</dt>
+      <dd class="col-sm-9">{% if questions %}{{questions|length}}{% else %}Pas de fichier questions{% endif %}</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header">
+    <i class="fas fa-table me-1"></i>
+  </div>
+  <div class="card-body">
+    <table id="datatable" class="table table-sm table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Code</th>
+        <th>#&nbsp;Réponses</th>
+        <th>#&nbsp;Réponses différentes</th>
+        <th>Réponses (exemples)</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for item in results %}
+      <tr>
+        <td>{{item.code}}</td>
+        <td>{{item.num_answers}}&nbsp;/&nbsp;{{item.num_rows}}&nbsp;({{"{:.0f}".format(100 * item.num_answers /
+          item.num_rows)}}%)
+        </td>
+        <td>{{item.num_answers_diff}}</td>
+        <td>{{item.answers}}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="mb-3 text-start">
+  <a href="{{url_for('survey_new', step=1)}}" class="btn btn-secondary btn-lg">Annuler</a>
+</div>
+<div class="mb-3 text-end">
+  <a href="{{url_for('survey_new', step=3)}}" class="btn btn-primary btn-lg">Suivant</a>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="{{url_for('static', filename='js/datatables.min.js')}}"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', event => {
+        let table = new DataTable('#datatable', {
+            layout: {
+                topStart: {
+                    buttons: [
+                        'copy', 'excel', 'pdf'
+                    ]
+                }
+            },
+            order: [[null, null]]
+        });
+    });
+
+</script>
+{% endblock %}

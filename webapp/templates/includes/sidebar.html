@@ -1,0 +1,93 @@
+<div id="layoutSidenav_nav">
+  <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+    <div class="sb-sidenav-menu">
+      <div class="nav">
+        <a class="nav-link" href="{{url_for('home')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-fw fa-house"></i></div>
+          Accueil
+        </a>
+
+        <div class="sb-sidenav-menu-heading">Visualisations</div>
+        <a class="nav-link" href="{{url_for('home')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-fw fa-location-crosshairs"></i></div>
+          Carte
+        </a>
+        <a class="nav-link" href="{{url_for('home')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-fw fa-chart-column"></i></div>
+          Statistiques
+        </a>
+
+
+        <div class="sb-sidenav-menu-heading">Enquêtes</div>
+        <a class="nav-link" href="{{url_for('survey_new')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-fw fa-upload"></i></div>
+          Nouvelle enquête
+        </a>
+        <a class="nav-link" href="{{url_for('survey_list')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-fw fa-square-poll-vertical"></i></div>
+          Enquêtes précédentes
+        </a>
+
+        <div class="sb-sidenav-menu-heading">Questions et réponses</div>
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseQuestions"
+           aria-expanded="false" aria-controls="collapseQuestions">
+          <div class="sb-nav-link-icon"><i class="fas fa-fw fa-clipboard-question"></i></div>
+          Questions
+          <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseQuestions" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="{{url_for('home')}}">
+              <div class="sb-nav-link-icon"><i class="fas fa-fw fa-clipboard"></i></div>
+              Catégories
+            </a>
+            <a class="nav-link" href="{{url_for('qg_list')}}">
+              <div class="sb-nav-link-icon"><i class="fas fa-fw fa-clipboard-list"></i></div>
+              Questions globales
+            </a>
+            <a class="nav-link" href="{{url_for('qps_list')}}">
+              <div class="sb-nav-link-icon"><i class="fas fa-fw fa-paste"></i></div>
+              Questions par enquête
+            </a>
+          </nav>
+        </div>
+        <a class="nav-link" href="{{url_for('home')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-fw fa-comment"></i></div>
+          Réponses
+        </a>
+
+        <div class="sb-sidenav-menu-heading">Paramètres</div>
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSettings"
+           aria-expanded="false" aria-controls="collapseSettings">
+          <div class="sb-nav-link-icon"><i class="fas fa-mountain-city"></i></div>
+          Lieux
+          <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseSettings" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="{{url_for('canton_list')}}">
+              <div class="sb-nav-link-icon"><i class="fas fa-fw fa-map"></i></div>
+              Cantons
+            </a>
+            <a class="nav-link" href="{{url_for('district_list')}}">
+              <div class="sb-nav-link-icon"><i class="fas fa-fw fa-map-location-dot"></i></div>
+              Districts
+            </a>
+            <a class="nav-link" href="{{url_for('commune_list')}}">
+              <div class="sb-nav-link-icon"><i class="fas fa-fw fa-location-dot"></i></div>
+              Communes
+            </a>
+          </nav>
+        </div>
+        <a class="nav-link" href="{{url_for('home')}}">
+          <div class="sb-nav-link-icon"><i class="fas fa-fw fa-gears"></i></div>
+          Configuration
+        </a>
+      </div>
+    </div>
+    <!--div class="sb-sidenav-footer">
+      <div class="small">Logged in as:</div>
+      Start Bootstrap
+    </div-->
+  </nav>
+</div>

@@ -1,0 +1,59 @@
+{% extends "includes/base.html" %}
+{% block title %}Liste - Enquêtes{% endblock %}
+
+{% block css %}
+<link href="{{url_for('static', filename='css/datatables.min.css')}}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Liste - Enquêtes</h1>
+<ol class="breadcrumb mb-4">
+  <li class="breadcrumb-item"><a href="{{url_for('home')}}">Accueil</a></li>
+  <li class="breadcrumb-item active">Enquêtes</li>
+</ol>
+
+<div class="card mb-4">
+  <div class="card-header">
+    <i class="fas fa-table me-1"></i>
+  </div>
+  <div class="card-body">
+    <table id="datatable" class="table table-sm table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Année</th>
+        <th>#&nbsp;Questions</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for item in liste %}
+      <tr>
+        <td><a href="{{url_for('survey_show', uid=item.uid)}}">{{item.name}}</a></td>
+        <td>{{item.year}}</td>
+        <td>{{item.num_questions}}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="{{url_for('static', filename='js/datatables.min.js')}}"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', event => {
+        let table = new DataTable('#datatable', {
+            layout: {
+                topStart: {
+                    buttons: [
+                        'copy', 'excel', 'pdf'
+                    ]
+                }
+            },
+            order: [[1, 'desc']]
+        });
+    });
+
+</script>
+{% endblock %}

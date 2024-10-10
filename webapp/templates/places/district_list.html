@@ -1,0 +1,63 @@
+{% extends "includes/base.html" %}
+{% block title %}Districts{% endblock %}
+
+{% block css %}
+<link href="{{url_for('static', filename='css/datatables.min.css')}}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Districts</h1>
+<ol class="breadcrumb mb-4">
+  <li class="breadcrumb-item"><a href="{{url_for('home')}}">Accueil</a></li>
+  <li class="breadcrumb-item">Lieux</li>
+  <li class="breadcrumb-item active">Districts</li>
+</ol>
+
+<div class="card mb-4">
+  <div class="card-header">
+    <i class="fas fa-table me-1"></i>
+  </div>
+  <div class="card-body">
+    <table id="datatable" class="table table-sm table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Code</th>
+        <th>Nom</th>
+        <th>Canton</th>
+        <th>#&nbsp;Communes</th>
+        <th>#&nbsp;Enquêtes</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for item in liste %}
+      <tr>
+        <td>{{item.code}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.canton}}</td>
+        <td>{{item.num_communes}}</td>
+        <td>{{0-1}}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="{{url_for('static', filename='js/datatables.min.js')}}"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', event => {
+        let table = new DataTable('#datatable', {
+            layout: {
+                topStart: {
+                    buttons: [
+                        'copy', 'excel', 'pdf'
+                    ]
+                }
+            }
+        });
+    });
+
+</script>
+{% endblock %}

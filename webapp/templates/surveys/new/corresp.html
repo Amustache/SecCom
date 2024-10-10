@@ -1,0 +1,89 @@
+{% extends "includes/base.html" %}
+{% block title %}Nouvelle enquête{% endblock %}
+
+{% block css %}
+<link href="{{url_for('static', filename='css/datatables.min.css')}}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Nouvelle enquête</h1>
+<ol class="breadcrumb mb-4">
+  <li class="breadcrumb-item"><a href="{{url_for('home')}}">Accueil</a></li>
+  <li class="breadcrumb-item active">Enquête</li>
+  <li class="breadcrumb-item active">Nouvelle</li>
+</ol>
+
+<div class="text-center mb-4">
+  <span class="badge rounded-pill text-bg-dark">&nbsp;</span>
+  <span class="badge rounded-pill text-bg-dark">&nbsp;</span>
+  <span class="badge rounded-pill text-bg-primary">Correspondance</span>
+  <span class="badge rounded-pill text-bg-light">&nbsp;</span>
+  <span class="badge rounded-pill text-bg-light">&nbsp;</span>
+</div>
+
+<form id="upload-form" method="post" action="{{url_for('survey_new', step=4)}}" enctype=multipart/form-data>
+  <div class="card mb-4">
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i>
+    </div>
+    <div class="card-body">
+      <table id="datatable" class="table table-sm table-striped table-hover">
+        <thead>
+        <tr>
+          <th>Code étude</th>
+          <th>Label étude</th>
+          <th>Question globale</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in questions_study %}
+        <tr>
+          <td>{{item.code}}</td>
+          <td>{{item.label}}</td>
+
+          <td>
+            <select id="{{item.code}}" name="{{item.code}}" class="form-select" aria-label="Default select example">
+              <option value="ignore" selected>(Ne pas ajouter aux questions globales)</option>
+              <option value="create" selected>(Créer une nouvelle question globale)</option>
+              <optgroup label="Questions globales existantes">
+              {% for qg in questions_global %}
+              <option value="{{qg.code}}">{{qg.label}}</option>
+              {% endfor %}
+              </optgroup>
+            </select>
+          </td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mb-3 text-start">
+    <a href="{{url_for('survey_new', step=1)}}" class="btn btn-secondary btn-lg">Annuler</a>
+  </div>
+  <div class="mb-3 text-end">
+    <button type="submit" class="btn btn-primary btn-lg">Suivant</button>
+  </div>
+</form>
+{% endblock %}
+
+{% block javascript %}
+<script src="{{url_for('static', filename='js/datatables.min.js')}}"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', event => {
+        let table = new DataTable('#datatable', {
+            layout: {
+                topStart: {
+                    buttons: [
+                        'copy', 'excel', 'pdf'
+                    ]
+                }
+            },
+            order: [[null, null]]
+        });
+    });
+
+</script>
+{% endblock %}

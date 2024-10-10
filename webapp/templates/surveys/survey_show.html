@@ -1,0 +1,85 @@
+{% extends "includes/base.html" %}
+{% block title %}Détails - {{item.name}}{% endblock %}
+
+{% block css %}
+<link href="{{url_for('static', filename='css/datatables.min.css')}}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Détails - {{item.name}}</h1>
+<ol class="breadcrumb mb-4">
+  <li class="breadcrumb-item"><a href="{{url_for('home')}}">Accueil</a></li>
+  <li class="breadcrumb-item"><a href="{{url_for('survey_list')}}">Enquêtes</a></li>
+  <li class="breadcrumb-item active">{{item.name}}</li>
+</ol>
+
+<div class="card mb-4 col-6">
+  <div class="card-header">
+    <i class="fas fa-circle-info me-1"></i>
+  </div>
+  <div class="card-body">
+    <dl class="row">
+      <dt class="col-sm-3">UID</dt>
+      <dd class="col-sm-9">#{{item.uid}}</dd>
+
+      <dt class="col-sm-3">Nom</dt>
+      <dd class="col-sm-9">{{item.name}}</dd>
+
+      <dt class="col-sm-3">Année</dt>
+      <dd class="col-sm-9">{{item.year}}</dd>
+
+      <dt class="col-sm-3">#&nbsp;Questions</dt>
+      <dd class="col-sm-9">{{item.num_questions}}</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header">
+    <i class="fas fa-table me-1"></i>
+  </div>
+  <div class="card-body">
+    <table id="datatable" class="table table-sm table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Code</th>
+        <th>Label</th>
+        <th>Enquête</th>
+        <th>#&nbsp;Réponses</th>
+        <th>Question globale associée</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for item in liste %}
+      <tr>
+        <td>{{item.code}}</td>
+        <td>{{item.label}}</td>
+        <td>{{item.survey}}</td>
+        <td>{{item.num_answers or "Aucune"}}</td>
+        <td>{{item.question_global or "Aucune"}}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="{{url_for('static', filename='js/datatables.min.js')}}"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', event => {
+        let table = new DataTable('#datatable', {
+            layout: {
+                topStart: {
+                    buttons: [
+                        'copy', 'excel', 'pdf'
+                    ]
+                }
+            },
+            order: [[null, null]]
+        });
+    });
+
+</script>
+{% endblock %}

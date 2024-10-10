@@ -1,0 +1,78 @@
+{% extends "includes/base.html" %}
+{% block title %}Nouvelle enquête{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Nouvelle enquête</h1>
+<ol class="breadcrumb mb-4">
+  <li class="breadcrumb-item"><a href="{{url_for('home')}}">Accueil</a></li>
+  <li class="breadcrumb-item">Enquête</li>
+  <li class="breadcrumb-item active">Nouvelle</li>
+</ol>
+
+<div class="text-center mb-4">
+  <span class="badge rounded-pill text-bg-primary">Téléversement</span>
+  <span class="badge rounded-pill text-bg-light">&nbsp;</span>
+  <span class="badge rounded-pill text-bg-light">&nbsp;</span>
+  <span class="badge rounded-pill text-bg-light">&nbsp;</span>
+  <span class="badge rounded-pill text-bg-light">&nbsp;</span>
+</div>
+
+<form id="upload-form" method="post" action="{{url_for('survey_new', step=2)}}" enctype=multipart/form-data>
+  <div class="row mb-3">
+    <label for="name" class="col-sm-2 col-form-label">
+      Nom de l'enquête
+      &nbsp;<span class="text-danger">*</span>
+    </label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="name" name="name" placeholder="GSB24" required>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label for="year" class="col-sm-2 col-form-label">
+      Année de l'enquête
+      &nbsp;<span class="text-danger">*</span>
+    </label>
+    <div class="col-sm-10">
+      <input type="number" class="form-control" id="year" name="year" min="1900" max="2099" step="1" placeholder="2024"
+             required>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label for="results" class="col-sm-2 col-form-label">
+      Fichier des résultats
+      &nbsp;<span class="text-danger">*</span>
+    </label>
+    <div class="col-sm-10">
+      <input
+          class="form-control"
+          id="results"
+          name="results"
+          type="file"
+          accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+          required
+      >
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label for="questions" class="col-sm-2 col-form-label">
+      Fichier des questions
+    </label>
+    <div class="col-sm-10">
+      <input
+          class="form-control"
+          id="questions"
+          name="questions"
+          type="file"
+          accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+      >
+    </div>
+  </div>
+
+  <div class="mb-3 text-end">
+    <button type="submit" class="btn btn-primary btn-lg">Suivant</button>
+  </div>
+</form>
+{% endblock %}
