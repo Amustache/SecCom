@@ -1,5 +1,6 @@
 black==24.8.0
 Flask==3.0.3
+flask-login==0.6.3
 Flask-SQLAlchemy==3.1.1
 dash==2.18.1
 dash-bootstrap-components==1.6.0

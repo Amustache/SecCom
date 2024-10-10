@@ -3,11 +3,14 @@ import logging
 
 
 from flask import abort, Flask, render_template
+from flask_login import login_manager
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 
 if __name__ == "__main__":
-    from database import Base, Canton, Commune, District, QuestionGlobal, QuestionPerSurvey, Survey
+    from database import Base, Canton, Commune, District, QuestionGlobal, QuestionPerSurvey, Survey, User
 else:
     from webapp.database import Base
 
@@ -15,8 +18,9 @@ else:
 def create_app():
     app = Flask(__name__)
     app.config.from_object("config")
-    db = SQLAlchemy(app, model_class=Base)
 
+    # Database
+    db = SQLAlchemy(app, model_class=Base)
     with app.app_context():
         db.reflect()
 
@@ -32,6 +36,20 @@ def create_app():
     @app.errorhandler(500)
     def error_internal(error):
         return render_template("errors/50x.html"), 500
+
+    # Login
+    @login_manager.user_loader
+    def user_loader(user_id):
+        """
+        Given _user_id_, return the associated User object.
+
+        :param user_id: User to retrieve.
+        :return: User or None.
+        """
+        with db.session as session:
+            with session.begin():
+                user = session.execute(select(District).filter_by(uid=user_id)).one_or_none()
+        return user[0] if user else None
 
     # Homepage, with default visualisation
     @app.route("/")
