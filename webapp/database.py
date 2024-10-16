@@ -22,6 +22,29 @@ class Base(DeclarativeBase):
         return [attr for attr in vars(cls) if not attr.startswith("_") and not attr[0].isupper()]
 
 
+class User(Base):
+    __tablename__ = "user"
+
+    uid: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(unique=True)
+    email: Mapped[str] = mapped_column(unique=True)
+    password: Mapped[str]
+    authenticated: Mapped[bool] = mapped_column(default=False)
+
+    def is_active(self):
+        return self.active
+
+    def get_id(self):
+        return self.uid
+
+    def is_authenticated(self):
+        return self.authenticated
+
+    def is_anonymous(self):
+        # False, as anonymous users aren't supported.
+        return False
+
+
 class Survey(Base):
     __tablename__ = "survey"
 
