@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 if __name__ == "__main__":
     from database import Base, Canton, Commune, District, QuestionGlobal, QuestionPerSurvey, Survey
 else:
-    from webapp.database import Base
+    from webapp.database import Base, Canton, Commune, District, QuestionGlobal, QuestionPerSurvey, Survey
 
 
 def create_app():
@@ -100,6 +100,10 @@ def create_app():
     @app.route("/config")
     def config():  # TODO
         return render_template("placeholder.html")
+
+    from map import create_dash_app
+
+    app = create_dash_app(app)
 
     if not app.debug:
         file_handler = FileHandler("error.log")
