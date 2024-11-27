@@ -131,6 +131,7 @@ def fig_switzerland_empty():
         )
     )
 
+    # Add main cities
     fig.add_trace(
             go.Scattermapbox(
                 name="Main Cities",
@@ -142,11 +143,11 @@ def fig_switzerland_empty():
                     if feature["properties"]["name"] in MAIN_CITIES ],
                 mode="markers+text",
                 textposition="top center",
-                marker=dict(size=15, color='black'),
+                marker=dict(size=15, color='Red'),
                 hoverinfo="none",
                 textfont=dict(
                 size=20, 
-                color='black',
+                color='Red',
                 )
             )
     )
@@ -196,7 +197,11 @@ def fig_map_with_data(df, chosen_question):
             z=dfp[chosen_question],
             featureidkey="properties.id",
             hoverinfo="text",
-            text=[f"{name}: {value}" for name, value in zip(MUNICIPALITIES.values(), dfp[chosen_question])],
+            #text=[f"{name}: {value}" for name, value in zip(MUNICIPALITIES.values(), dfp[chosen_question])],
+            text=[
+                f"{name}: {SPECIAL_ANSWERS.get(value, value)}"
+                for name, value in zip(MUNICIPALITIES.values(), dfp[chosen_question])
+            ],
         )
     # Discrete or few answers
     else:
@@ -215,11 +220,15 @@ def fig_map_with_data(df, chosen_question):
                 z=[i] * len(dfp),
                 featureidkey="properties.id",
                 showlegend=True,
-                name=text_answer,
+                #name=text_answer,
+                text_answer = SPECIAL_ANSWERS.get(value, value),
                 colorscale=COLOR_SCALE_10[i],
                 showscale=False,  # Hiding the scale
                 hoverinfo="text",
-                text=[f"{name}: {text_answer}" for name in MUNICIPALITIES.values()],
+                #text=[f"{name}: {text_answer}" for name in MUNICIPALITIES.values()],
+                text=[
+                    f"{name}: {text_answer}" for name in MUNICIPALITIES.values()
+                ],
             )
 
     # And FINALLY, we add the special values!

@@ -23,6 +23,14 @@ from webapp.map_helpers import (
 def create_dash_app(flask_server: Flask, url_path="/map/"):
     # Load combined responses from both current and old years
     df_commune_responses_combined = pd.read_csv("data/commune_responses_combined.csv").set_index("gemid")
+    df_commune_responses_combined.replace({-99: None, -99.0: None}, inplace=True)
+    df_commune_responses_combined = df_commune_responses_combined.applymap(
+        lambda x: -99 if pd.notna(x) and isinstance(x, (int, float)) and x < 0 else x
+    )
+    df_commune_responses_combined = df_commune_responses_combined.apply(pd.to_numeric, errors="coerce")
+
+
+    
     # Load additional data files for the app
     df_combined = pd.read_csv("data/combined_df.csv")
     top_10_question_globales = pd.read_csv("data/top_10_QuestionGlobales_NLP.csv")
@@ -236,7 +244,7 @@ def create_dash_app(flask_server: Flask, url_path="/map/"):
                 responses = filtered_responses[selected_variable].tolist()
                 response_dict = dict(zip(communes, responses))
 
-                # assign a default value (99) to communes without data
+                # assign a default value (-99) to communes without data
                 aggregated_responses = [
                     response_dict.get(feature["properties"]["id"], -99) for feature in MUNICIPALITIES_DATA["features"]
                 ]
@@ -317,7 +325,7 @@ def create_dash_app(flask_server: Flask, url_path="/map/"):
                     hoverinfo="text",
                     text=[
                         f"{feature['properties']['name']}: "
-                        f"{'No Data' if value == -1 else ('Voluntary no response' if value == -99 else ('No opinion' if value == 99 else value))}"
+                        f"{('No data' if value == -99 else ('No opinion' if value == 99 else value))}"
                         for value, feature in zip(variable_values, MUNICIPALITIES_DATA["features"])
                     ],
                     showscale=True,
